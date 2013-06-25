@@ -1,0 +1,88 @@
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        $(function(){
+            
+            $('#team-prompt').hide();
+
+            var iosocket = io.connect();
+
+              iosocket.on('connect', function () {
+                
+                iosocket.on('name', function (name) {
+                  $('#list-users').append($('<li></li>').text(name));
+                });
+              });
+
+                iosocket.on('vote', function (vote) {
+                  console.log('Vote !');
+                    $('#list-team-'+vote).append($('<li></li>').text('Vote!'));
+                });
+
+
+            $('#go').click(function(event) {
+                event.preventDefault();
+                iosocket.emit('set-nickname', $('#name').val());
+                $('#list-users').append($('<li></li>').text($('#name').val()));
+                $('#name-prompt').hide();
+                $('#team-prompt').show();
+            });
+
+            $('#team-a').click(function(event) {
+                event.preventDefault();
+                iosocket.emit('vote', 'a');
+                $('#list-team-a').append($('<li></li>').text('Vote'));
+                $('#team-prompt').hide();
+            });
+
+            $('#team-b').click(function(event) {
+                event.preventDefault();
+                iosocket.emit('vote', 'b');
+                $('#list-team-b').append($('<li></li>').text('Vote'));
+                $('#team-prompt').hide();
+            });
+
+        });
+    </script>
+</head>
+<body>
+I want to play a game
+<hr />
+
+<div id="name-prompt">
+  Name: <input id="name" type="text" name="name"><br>
+  <input id="go" type="submit" value="Go">
+</div>
+
+<div id="team-prompt">
+    <a id="team-a" href="#">Team A</a> | <a id="team-b" href="#">Team B</a>
+</div>
+
+<hr style="clear: both;">
+
+<div id="users">
+    <div style="float: left; width: 250px;">
+        <h2>Users</h2>
+        <ul id="list-users"></ul>
+    </div>
+</div>
+
+<div id="vote-results">
+    <div style="float: left; width: 250px;">
+        <h2>Team A</h2>
+        <ul id="list-team-a"></ul>
+    </div>
+
+    <div style="float: left; width: 250px;">
+        <h2>Team B</h2>
+        <ul id="list-team-b"></ul>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
