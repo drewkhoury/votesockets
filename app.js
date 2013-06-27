@@ -43,3 +43,9 @@ socketio.listen(server).on('connection', function (socket) {
 	});
 
 });
+
+// assuming io is the Socket.IO server object
+socketio.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
