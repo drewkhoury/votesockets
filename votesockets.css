@@ -1,0 +1,461 @@
+#console,
+#results {
+  clear: both;
+}
+
+#presentation .button {
+  display: none;
+}
+
+#end-game-msg,
+#timer {
+  background: #E74C3C;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0; 
+  opacity: 0.9;
+  display: none; 
+}
+
+#end-game-msg {
+  opacity: 0.7;
+}
+
+#end-game-msg h1,
+#end-game-msg h2,
+#timer h1 {
+  font-size: 180px;
+  line-height: 180px;
+  margin-top: 40px;
+  text-align: center;  
+}
+
+#end-game-msg h2 {
+  font-size: 80px;
+  line-height: 80px;
+}
+
+@media only screen and (max-width: 600px) {  
+  #end-game-msg h1,
+  #end-game-msg h2,
+  #timer h1 {
+    font-size: 80px;
+    line-height: 80px;
+  }
+
+  #end-game-msg h2 {
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+}  
+
+.page-container {
+  margin-right: auto;
+  margin-left: auto;
+  margin: 20px;
+}
+
+.user-prompt {
+  position: relative;
+  background: #1abc9c;
+  background-size: 16px 16px;
+  color: #34495e;
+  padding: 19px 25px 20px;
+}
+.user-prompt:before {
+  position: absolute;
+  font-family: 'Flat-UI-Icons';
+  content: "\e01c";
+  font-size: 16px;
+  display: inline-block;
+  top: 50%;
+  left: 92%;
+  margin: -0.5em 0 0 -1em;
+}
+input.user-prompt-field {
+  background: none;
+  border: none;
+  color: #34495e;
+  font-size: 19px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 23px;
+  padding: 5px 0;
+  text-indent: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+input.user-prompt-field:-moz-placeholder {
+  color: #34495e;
+}
+input.user-prompt-field::-webkit-input-placeholder {
+  color: #34495e;
+}
+input.user-prompt-field.placeholder {
+  color: #34495e;
+}
+
+/* 
+---------------------------------------------------------------------------------------------------------
+voting-container - START
+---------------------------------------------------------------------------------------------------------
+*/
+
+    .voting-container {
+      background-color: #2c3e50;
+      color: #798795;
+      margin-bottom: 20px;
+    }
+    .voting-container ul {
+      margin: 0;
+      list-style-type: none;
+    }
+    .voting-container li {
+      background: #34495e url(../Flat-UI-master/images/todo/todo.png) 92% center no-repeat;
+      background-size: 20px 20px;
+      cursor: pointer;
+      margin-top: 2px;
+      padding: 18px 42px 17px 25px;
+      position: relative;
+      -webkit-transition: 0.25s;
+      -moz-transition: 0.25s;
+      -o-transition: 0.25s;
+      transition: 0.25s;
+      -webkit-backface-visibility: hidden;
+    }
+    .voting-container li:first-child {
+      margin-top: 0;
+    }
+    .voting-container li:last-child {
+      padding-bottom: 18px;
+    }
+    .voting-container li.vote-done {
+      background: transparent url(../Flat-UI-master/images/todo/done.png) 92% center no-repeat;
+      background-size: 20px 20px;
+      color: #1abc9c;
+    }
+    .voting-container li.vote-done .option-name {
+      color: #1abc9c;
+    }
+    .todo-search {
+      position: relative;
+      background: #1abc9c;
+      background-size: 16px 16px;
+      color: #34495e;
+      padding: 19px 25px 20px;
+    }
+    .todo-search:before {
+      position: absolute;
+      font-family: 'Flat-UI-Icons';
+      content: "\e01c";
+      font-size: 16px;
+      display: inline-block;
+      top: 50%;
+      left: 92%;
+      margin: -0.5em 0 0 -1em;
+    }
+    input.user-prompt-field {
+      background: none;
+      border: none;
+      color: #34495e;
+      font-size: 19px;
+      font-weight: 700;
+      margin: 0;
+      line-height: 23px;
+      padding: 5px 0;
+      text-indent: 0;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+    input.user-prompt-field:-moz-placeholder {
+      color: #34495e;
+    }
+    input.user-prompt-field::-webkit-input-placeholder {
+      color: #34495e;
+    }
+    input.user-prompt-field.placeholder {
+      color: #34495e;
+    }
+    .voter-icon {
+      float: left;
+      font-size: 24px;
+      padding: 11px 22px 0 0;
+    }
+    .option-content {
+      padding-top: 1px;
+      overflow: hidden;
+    }
+    .option-name {
+      color: #ffffff;
+      font-size: 17px;
+      margin: 1px 0 3px;
+    }
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 2) {
+      .voting-container li {
+        background-image: url(../Flat-UI-master/images/todo/todo-2x.png);
+      }
+      .voting-container li.vote-done {
+        background-image: url(../Flat-UI-master/images/todo/done-2x.png);
+      }
+    }
+
+
+/* 
+---------------------------------------------------------------------------------------------------------
+voting-container - END
+---------------------------------------------------------------------------------------------------------
+
+*/
+
+.voting-container li.vote-done.vote-option-1,
+.voting-container li.vote-done.vote-option-1 .option-name {
+  color: #2980B9;
+}
+
+.voting-container li.vote-done.vote-option-2,
+.voting-container li.vote-done.vote-option-2 .option-name {
+  color: #C0392B;
+}
+
+.user-prompt {
+  background: #BDC3C7;
+}
+
+#game {
+  display: none;
+}
+
+#game, #console, #presentation {
+  max-width: 1000px;
+}
+
+.demo-headline {
+  display: none;
+}
+
+.presentation-buttons {
+  margin: 0 auto;
+}
+
+input.user-prompt-field {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 23px;
+  padding: 5px 0;
+  width: 86%;
+
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+
+}
+
+.totals-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.totals {
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 5px;
+
+  background-color: #ECF0F1;
+
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 10px; 
+
+  position: relative;
+  text-align: center;
+
+  width: 30px;
+}
+
+.round-1 {
+  margin-left: 0;
+}
+
+.game-total {
+  margin-left: 10px;
+  margin-right: 0;
+  width: 55px;
+  background-color: #F1C40F; 
+  color: white; 
+}
+
+.game-over {
+  opacity: 1;
+  background-color: #F39C12;
+}
+
+
+.round-over {
+background-color: #BDC3C7;
+}
+
+.user-prompt:before {
+  content: none;
+}
+
+.registered {
+  background-color: #1abc9c;  
+}
+
+#go {
+  display: inline-block;
+  padding: 5px;
+  cursor: pointer;
+  position: relative;
+  left: 15px;
+  top: 3px;
+}
+
+#go:before {
+  font-family: 'Flat-UI-Icons';
+  content: "\e02c";
+  font-size: 16px;
+}
+
+.registered #go:before {
+  content: "\e00a";
+}
+
+.registered #go {
+  cursor: auto;
+}
+
+.vote-panel {
+  opacity: 0.1;
+  margin: 0;
+  padding: 0;
+}
+
+.vote-panel .vote-option {
+  cursor: auto;
+}
+
+.voting-open {
+  opacity: 1;
+}
+
+.voting-open .vote-option {
+  cursor: pointer;
+}
+
+.container {
+  margin: 10px;
+}
+
+#voting, #email-prompt, #presentation {
+    display: none;
+}
+
+#console{
+    background: LightYellow;
+    float: left;
+
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+
+    border: 1px black solid;
+    width: 100%;
+}
+
+#console ul {
+  padding: 10px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+#console .current {
+    font-weight: bold;
+}
+
+.square {
+    float: left;
+    padding: 10px;
+}
+
+.circular {
+    width: 100px;
+    height: 100px;
+    border-radius: 80px;
+    -webkit-border-radius: 80px;
+    -moz-border-radius: 80px;
+    border: 8px solid black;
+}
+
+.border-vote-option-1 {
+   border: 8px solid #2980B9;
+}
+
+.border-vote-option-2 {
+   border: 8px solid #C0392B;
+}
+
+input {
+    padding: 10px; font-size: 60px; width:95%;
+    margin: 30px;
+}
+
+.box {
+    height: 320px;
+    margin: 10px;
+    width: 45%;
+    float: left;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
+
+.button {
+    width: 25%;
+    padding: 10px;
+    margin: 10px;
+    background-color: #F1C40F;
+    height: 50px;
+    float: left;
+    font-size: 40px;
+    text-align: center;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    cursor: pointer;
+    color: #ECF0F1;
+}
+
+.disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

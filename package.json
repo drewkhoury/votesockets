@@ -2,7 +2,11 @@
   "name": "votesockets",
   "version": "0.0.1",
   "dependencies": {
-    "socket.io": "latest"
+    "http": "latest",
+    "fs": "latest",
+    "node-static": "latest",
+    "util": "latest",
+    "socket.io": "latest",        
   },
   "engines": {
     "node": "0.10.x",

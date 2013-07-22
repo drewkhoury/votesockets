@@ -1,432 +1,105 @@
-<html>
-<head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>VoteSockets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+
+    <link href="Flat-UI-master/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="Flat-UI-master/css/flat-ui.css" rel="stylesheet">
+    <link href="votesockets.css" rel="stylesheet">
+    <link rel="shortcut icon" href="images/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="Flat-UI-master/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="page-container">
+
+      <div id="presentation">
+          <div class="presentation-buttons">
+            <div id="game-opened" class="button">OPEN</div>
+            <div id="game-started" class="button">START</div>
+            <div id="game-closed" class="button">CLOSE</div>
+          </div>
+
+          <div id="results"></div>
+      </div>
+
+      <div id="voters">
+
+        <div id="game">
+
+          <div class="totals-container">
+            <div class="totals round-total round-1">
+              <h3>-</h3>
+            </div>
+
+            <div class="totals round-total round-2">
+              <h3>-</h3>
+            </div>
+
+            <div class="totals round-total round-3">
+              <h3>-</h3>
+            </div>
+
+            <div class="totals game-total">
+              <h3>-</h3>
+            </div>
+          </div>
+
+          <div class="voting-container" >
+                <div class="user-prompt">
+                  <input id="email" class="user-prompt-field" type="search" value="" placeholder="email" />
+                  <div id="go"></div>
+                </div>
+
+                <ul class="vote-panel">
+                  <li class="vote-option vote-option-1" option="vote-option-1">
+                    <div class="voter-icon fui-user"></div>
+                    <div class="option-content">
+                      <h4 class="option-name">
+                        Vote Blue
+                      </h4>
+                      We are the navy blues
+                    </div>
+                  </li>
+
+                  <li class="vote-option vote-option-2" option="vote-option-2">
+                    <div class="voter-icon fui-user"></div>
+                    <div class="option-content">
+                      <h4 class="option-name">
+                        Vote Red
+                      </h4>
+                      Red goes faster
+                    </div>
+                  </li>
+                </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="timer">
+          <h1>-</h1>
+      </div>
+
+      <div id="end-game-msg">
+          <h1>-</h1>
+          <h2>-</h2>
+      </div>
+
+      <div id="console"><ul><li>Console Started</li></ul></div>
+
+    </div>
+
+
+    <!-- Load JS here for greater good =============================-->
+    <script src="Flat-UI-master/js/jquery-1.8.3.min.js"></script>
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    
-    <script>
-        $(function(){
-
-            ///////////////////////////////
-            // everyone
-            ///////////////////////////////
-
-            var socket = io.connect();
-             
-            url = $(location).attr('href').split("?"); // spit the url by the ? character    
-
-            // functions
-            function game_console (message) {
-                $('#console ul li').removeClass('current');
-                $("#console ul").prepend('<li class="current"><p>'+message+'</p></li>');
-            }
-
-            function points (round, points){
-                $("#round_"+round).html(points);   
-            }
-
-            socket.on('connect', function () {
-                // ask for status of the game when we connect
-                socket.emit('get-game-status');
-            });  
-
-            socket.on('console', function (message) {
-                game_console(message);
-            });  
-
-            socket.on('points', function (data) {
-                points(data.round, data.points);
-                game_console(data.points + ' points awarded for round '+ data.round);
-            });
-
-            socket.on('round', function (round) {
-                $("#round-number").html('Round 1');
-            });
-
-            socket.on('tally', function (tally) {
-                points('tally', tally);
-                game_console(tally + ' points awarded in total for the game');
-                socket.emit('get-game-status');
-            });
-
-            ///////////////////////////////
-            // presentation screen only
-            ///////////////////////////////
-            if(url[1]=='presentation'){
-
-                // show presentation screen (hide buttons until we're ready to show them)
-                $('#presentation .button').hide();
-                $('#presentation').show();
-
-                // change output depending on the status of the game
-                socket.on('get-game-status', function (game_status) {
-                    if(game_status=='start'){
-                        $('#start-game').trigger('click');
-                    }
-                    else if(game_status=='open'){
-                        $('#open-game').trigger('click');
-                    } 
-                    else if(game_status=='kill'){
-                        $('#kill-game').trigger('click');
-                    } 
-                    else if(game_status=='closed'){
-                         if(!$('#kill-game').hasClass('disabled')){
-                            socket.emit('kill-game');
-
-                            $('#open-game').css('background-color','pink');
-                            $('#start-game').css('background-color','pink');
-                            $('#kill-game').css('background-color','LightGreen');
-                            
-                            $('#open-game').removeClass('disabled');
-                            $('#start-game').addClass('disabled');
-                            $('#kill-game').addClass('disabled');
-
-                            $('#presentation .button').show();
-
-                            $('#results').html('');
-                        }
-                    }     
-                });
-                
-                // create a gravatar icon
-                socket.on('gravatar', function (gravatar_hash) {
-                  $('#results').prepend('<div id="'+gravatar_hash+'" class="square"> <div class="circular"></div> </div>');
-                  $('#'+gravatar_hash+' .circular').css('background', 'url(http://gravatar.com/avatar/'+gravatar_hash+'?s=150) no-repeat');
-                });
-
-                // change the color of the icon
-                socket.on('vote', function (data) {
-                    $('#'+data['gravatar_hash']).css('background', data['vote']);
-                });
-
-                // open a new game (for registrations)
-                $('#open-game').click(function(event) {
-                    if(!$('#open-game').hasClass('disabled')){
-                        socket.emit('open-game');
-                        
-                        $('#open-game').css('background-color','LightGreen');
-                        $('#start-game').css('background-color','pink');
-                        $('#kill-game').css('background-color','pink');
-
-                        $('#open-game').addClass('disabled');
-                        $('#start-game').removeClass('disabled');
-                        $('#kill-game').removeClass('disabled');
-
-                        $('#presentation .button').show();
-                    }
-                });
-
-                // start game (voting begins)
-                $('#start-game').click(function(event) {
-                    if(!$('#start-game').hasClass('disabled')){
-                        socket.emit('start-game');
-                        $('#open-game').css('background-color','pink');
-                        $('#start-game').css('background-color','LightGreen');
-                        $('#kill-game').css('background-color','pink');
-
-                        $('#open-game').addClass('disabled');
-                        $('#start-game').addClass('disabled');
-                        $('#kill-game').removeClass('disabled');
-
-                        $('#presentation .button').show();
-                    }
-                });
-
-                // kill game (game closed)
-                $('#kill-game').click(function(event) {
-                    if(!$('#kill-game').hasClass('disabled')){
-                        socket.emit('kill-game');
-
-                        $('#open-game').css('background-color','pink');
-                        $('#start-game').css('background-color','pink');
-                        $('#kill-game').css('background-color','LightGreen');
-                        
-                        $('#open-game').removeClass('disabled');
-                        $('#start-game').addClass('disabled');
-                        $('#kill-game').addClass('disabled');
-
-                        $('#presentation .button').show();
-
-                        $('#results').html('');
-                    }
-                });
-
-                // if game closed
-                $('#presentation .button').show();
-
-            }
-            ///////////////////////////////
-            // voters only
-            ///////////////////////////////
-            else { 
-
-                // functions
-                function start_game(){
-
-                    // if you dont have an icon, assume you don't deserve to vote
-                    if($('#user_gravatar .vote_icon').length==0){
-                        game_console(':( you did not register in time and your host has started the game without you. What a douche.'); 
-                        $('#email-prompt').hide();    
-                    }
-                    else { 
-                        game_console('Let the voting begin!');
-                        $('#email-prompt').hide();    
-                        $('#voting').show();
-                        $('#user_gravatar').html('');       
-                   }
-
-                }
-                function open_game(){
-                    game_console('Registration is now OPEN. Enter your email to begin.');
-                    $('#email-prompt').show(); 
-                    $('#user_gravatar').html('');
-                }
-
-                function kill_game(){
-                    game_console('Ouch. The host has killed the game');
-                    $('#email-prompt').hide();
-                    $('#voting').hide();
-                    $('#user_gravatar').html(''); 
-                    $('#green').html('');
-                    $('#red').html('');  
-                }
-
-                function closed_game(){
-                    game_console('There are no open games at this time');
-                    $('#email-prompt').hide();
-                    $('#voting').hide();
-                    $('#user_gravatar').html('');      
-                }
-
-                // change output depending on the status of the game
-                socket.on('get-game-status', function (game_status) {
-                    if(game_status=='start'){
-                        start_game();
-                    }
-                    else if(game_status=='open'){
-                        open_game();
-                    } 
-                    else if(game_status=='kill'){
-                        kill_game();
-                    } 
-                    else if(game_status=='closed'){
-                        closed_game();
-                    }     
-                });
-
-                // open a new game
-                socket.on('open-game', function () {
-                    open_game();   
-                }); 
-
-                // start game
-                socket.on('start-game', function () {
-                    start_game();
-                }); 
-
-                // start game
-                socket.on('kill-game', function () {
-                    kill_game();
-                }); 
-
-                $('#go').click(function(event) {
-                    event.preventDefault();
-
-                    $('#email-prompt').hide();
-
-                    var email         = $('#email').val();
-                    var email_clean   = $.trim(email).toLowerCase();
-                    var gravatar_hash = CryptoJS.MD5(email_clean).toString();
-
-                    // tell the server about a new gravatar
-                    socket.emit('gravatar', gravatar_hash);
-
-                    // create icon place holders for each vote button
-                    $('#green').prepend('<div class="vote_icon square"> <div class="circular_large"></div> </div>');
-                    $('#green .vote_icon .circular_large').css('background', 'url(http://gravatar.com/avatar/'+gravatar_hash+'?s=200) no-repeat');
-                    $('#green .vote_icon').hide();
-
-                    $('#red').prepend('<div class="vote_icon square"> <div class="circular_large"></div> </div>');
-                    $('#red .vote_icon .circular_large').css('background', 'url(http://gravatar.com/avatar/'+gravatar_hash+'?s=200) no-repeat');   
-                    $('#red .vote_icon').hide();
-
-                    // nice message and icon for user
-                    game_console('Thanks! Waiting for other players so we can start the game.');
-                    $('#user_gravatar').prepend('<div class="vote_icon square"> <div class="circular_large"></div> </div>');
-                    $('#user_gravatar .vote_icon .circular_large').css('background', 'url(http://gravatar.com/avatar/'+gravatar_hash+'?s=200) no-repeat');
-
-                });
-
-                $('#green').click(function(event) {
-                    socket.emit('vote', 'green');
-                      
-                      // for THIS client only
-                       $('#red .vote_icon').hide(); 
-                       $('#green .vote_icon').show();
-                });
-
-                $('#red').click(function(event) {
-                    socket.emit('vote', 'red'); 
-                      
-                      // for THIS client only
-                      $('#green .vote_icon').hide(); 
-                      $('#red .vote_icon').show();                   
-                });           
-
-            }
-
-        });
-    </script>
-
-    <style type="text/css">
-
-        #voting, #email-prompt, #presentation {
-            display: none;
-        }
-
-        #console{
-            background: LightYellow;
-            float: left;
-
-            padding: 20px;
-            border-radius: 10px;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-
-            border: 1px black solid;
-            width: 90%;
-        }
-
-        ul {
-            padding-left: 20px;
-        }
-
-        #console .current {
-            font-weight: bold;
-        }
-
-        .square {
-            float: left;
-            padding: 10px;
-        }
-
-        .circular {
-            width: 150px;
-            height: 150px;
-            border-radius: 75px;
-            -webkit-border-radius: 75px;
-            -moz-border-radius: 75px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-        }
-
-        .circular_large {
-            width: 200px;
-            height: 200px;
-            border-radius: 150px;
-            -webkit-border-radius: 150px;
-            -moz-border-radius: 150px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-        }
-
-        input {
-            padding: 10px; font-size: 60px; width:95%;
-            margin: 30px;
-        }
-
-        .box {
-            height: 320px;
-            margin: 10px;
-            width: 45%;
-            float: left;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-        }
-
-        #green {
-            background-color: green;
-        }
-
-        #red {
-            background-color: red;
-        }
-
-        .button {
-            width: 25%;
-            padding: 10px;
-            margin: 10px;
-            background-color: pink;
-            height: 50px;
-            float: left;
-            font-size: 40px;
-            text-align: center;
-            border-radius: 10px;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-            -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-        }
-
-        .disabled {
-            opacity: 0.4;
-        }
-
-    </style>
-
-</head>
-
-<body>
-    <div id="presentation">
-        <div id="open-game" class="button">OPEN</div>
-        <div id="start-game" class="button">START</div>
-        <div id="kill-game" class="button">CLOSE</div>
-       
-        <div id="results">
-        </div>
-    </div>
-
-    <div id="voters">
-        <h1><span id="round-number"></span></h1>
-        <div id="points">
-            <div>Round 1 > <span id="round_1"></span> Points</div>
-            <div>Round 2 > <span id="round_2"></span> Points</div>
-            <div>Round 3 > <span id="round_3"></span> Points</div>
-            <div>Tally >>> <span id="round_tally"></span> Points</div>
-        </div>
-
-        <div id="voting">
-            <div id="green" class="box">
-            </div>
-
-            <div id="red" class="box">
-            </div>
-        </div>
-
-        <div id="email-prompt">
-            <form>
-                <input id="email" type="text" name="email" value=""><br>
-                <input id="go" type="submit" value="Go">
-            </form>      
-        </div>
-
-        <div id="user_gravatar">
-        </div>
-
-    </div>
-
-    <div id="console"><ul><li>Console Started</li></ul></div>
-
-</body>
-
+    <script src="/socket.io/socket.io.js"></script> 
+    <script src="client.js"></script>
+  </body>
 </html>
-
-
-
-
