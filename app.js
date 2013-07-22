@@ -5,10 +5,7 @@
 	// node modules
 	var app = require('http').createServer(handler);
 	var fs = require('fs');
-
-	// static web server
 	var static = require('node-static');
-	var http = require('http');
 	var util = require('util');
 
 	// server vars
