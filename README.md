@@ -2,11 +2,11 @@
 
 This project was made as a proof of concept for the Melborne Developer Meetup, MelbDev.io
 
-The code does not take advantage of javascript application frameworks to keep things simple.
+The code does not take advantage of javascript application frameworks (to keep things simple for the demo).
 
 The backend is written in nodejs (Javascript) and the frontend is also striaght Javascript.
 
-A few libraries were used to help keep things simple. These include jQuery, Socket.io & FlatUI.
+A few libraries were used to speed things along. These include jQuery, Socket.io & FlatUI.
 
 The FlatUI files are included in this project and are not modified in any way.
 
