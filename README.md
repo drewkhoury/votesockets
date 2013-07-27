@@ -93,9 +93,11 @@ Ties are decided by the team that was formed first (ie: in the case of a draw th
 		sudo npm install forever
 
 	You will need to setup a web root:
-		mkdir /var/www
-		chown -R /var/www ubuntu 
+		mkdir /var/www 
 		chown -R ubuntu /var/www
+
+	Download the app:
+		git clone https://github.com/drewkhoury/votesockets.git
 
 	Start the node app:
 		cd /var/www; node app.js
